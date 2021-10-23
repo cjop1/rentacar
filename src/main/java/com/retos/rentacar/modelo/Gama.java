@@ -11,14 +11,21 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+/**
+ *
+ * @author cjop1
+ */
+/*
+Entidad clase vehículo (tabla Gama)
+ */
 @Entity
 @Table(name = "gama")
 public class Gama implements Serializable {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Integer idGama;
-    private String name;
-    private String description;
+    private Integer idGama; //Atributo (columna) idGama
+    private String name; //Atributo (columna) nombre de la gama
+    private String description; //Atributo (columna) descripción de la gama
      
     @OneToMany(cascade = {CascadeType.PERSIST},mappedBy="gama")
     @JsonIgnoreProperties("gama")
