@@ -47,7 +47,7 @@ public class GamaServices {
                     evt.get().setDescription(gama.getDescription());
                     }
                 metodosCrudGama.save(evt.get());
-                return gama;
+                return evt.get();
                 }
             else{
                 return gama;
