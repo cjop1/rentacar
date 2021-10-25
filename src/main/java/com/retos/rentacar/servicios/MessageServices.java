@@ -46,7 +46,7 @@ public class MessageServices {
                     evt.get().setMessageText(message.getMessageText());
                     }
                 metodosCrudMessage.save(evt.get());
-                return message;
+                return evt.get();
                 }
             else{
                 return message;

@@ -48,7 +48,7 @@ public class ScoreServices {
                     evt.get().setTextScore(score.getTextScore());
                     }
                 metodosCrudScore.save(evt.get());
-                return score;
+                return evt.get();
                 }
             else{
                 return score;
