@@ -2,7 +2,13 @@
 package com.retos.rentacar.servicios;
 
 import com.retos.rentacar.modelo.Reservation;
+import com.retos.rentacar.modelo.custom.ConteoClient;
+import com.retos.rentacar.modelo.custom.SubtotalesStatus;
 import com.retos.rentacar.repositorio.ReservationRepository;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,4 +74,40 @@ public class ReservationServices {
         return aBoolean;
     }
     
+ public List<ConteoClient> getTopClientes(){
+       return metodosCrudReservation.getTopClientes();
+    }
+   
+    public SubtotalesStatus getStatusReport(){
+        List<Reservation> completed = metodosCrudReservation.getReservacionByStatus("completed");
+        List<Reservation> cancelled = metodosCrudReservation.getReservacionByStatus("cancelled");
+        
+        SubtotalesStatus subtStatus = new SubtotalesStatus(completed.size(), cancelled.size());
+        return subtStatus;
+    }
+    
+    public List<Reservation> getReservacionTiempo(String d1, String d2){
+        SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDateIni=new Date();
+        Date startDateFin=new Date();
+        
+         try
+            {
+                startDateIni = parser.parse(d1);
+                startDateFin = parser.parse(d2);
+	    }
+         catch(ParseException evt)
+            {
+                evt.printStackTrace();
+	    }
+                if(startDateIni.before(startDateFin))
+                {
+	            return metodosCrudReservation.getReservacionTiempo(startDateIni, startDateFin);
+	        }   
+                else
+                {
+	            return new ArrayList<>();
+                } 
+        
+            }
 }
