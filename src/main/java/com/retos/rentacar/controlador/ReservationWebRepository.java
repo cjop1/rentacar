@@ -2,6 +2,8 @@
 package com.retos.rentacar.controlador;
 
 import com.retos.rentacar.modelo.Reservation;
+import com.retos.rentacar.modelo.custom.ConteoClient;
+import com.retos.rentacar.modelo.custom.SubtotalesStatus;
 import com.retos.rentacar.servicios.ReservationServices;
 import java.util.List;
 import java.util.Optional;
@@ -56,4 +58,20 @@ public class ReservationWebRepository {
     public boolean delete(@PathVariable ("id") int idReservation) {
         return servicios.deleteReservation(idReservation);
     }
+    
+    @GetMapping("/report-status")
+    public SubtotalesStatus getReservationStatusReport(){
+    return servicios.getStatusReport();
+	    }
+    
+    @GetMapping("/report-dates/{startDateIni}/{startDateFin}")
+    public List<Reservation> getReservacionTiempo (@PathVariable("startDateIni")String startDateIni, @PathVariable("startDateFin")String startDateFin ){
+    return servicios.getReservacionTiempo(startDateIni, startDateFin);
+	     }
+	     
+    @GetMapping("/report-clients")
+    public List<ConteoClient> getTopClients(){
+    return servicios.getTopClientes();
+    }
+    
 }
