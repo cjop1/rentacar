@@ -38,7 +38,7 @@ public class Car implements Serializable {
     /*
     Atributo nombre del vehículo (columna)
     */
-        private String name;
+    private String name;
     
     /*
     Atributo marca del vehículo (columna)
