@@ -1,297 +1,220 @@
-function autoInicioReservation(){
-    console.log("se esta ejecutando tabla Reservation")
-    $.ajax({
+function autoInicioReservation()
+{
+    console.log("se esta ejecutando tabla Reservación")
+
+    $.ajax
+    ({
         url:"http://155.248.227.6:8080/api/Reservation/all",
         type:"GET",
         datatype:"JSON",
-        success:function(respuesta){
+        success:function(respuesta)
+        {
             console.log(respuesta);
             pintarRespuestaReservation(respuesta);
             let $select = $("#Select-Reservation");
-            $.each(respuesta, function (_id, name) {
-                $select.append('<option value='+name.id+'>'+name.name+'</option>');
-                console.log("select "+name.id);
-            }); 
+            $.each
+            (respuesta, function (idReservation) 
+            {
+                $select.append('<option value='+idReservation+'></option>');
+                console.log("select "+idReservation);
+            }
+            ); 
         }
     })
 }
 
-function pintarRespuestaReservation(respuesta){
+function autoInicioClient()
+{
+    console.log("se esta ejecutando tabla Cliente")
 
+    $.ajax
+    ({
+        url:"http://155.248.227.6:8080/api/Client/all",
+        type:"GET",
+        datatype:"JSON",
+        success:function(respuesta)
+        {
+            console.log(respuesta);
+            let $select = $("#Select-Client");
+            $.each
+            (respuesta, function (idClient, name) 
+            {
+                $select.append('<option value='+name.idClient+'>'+name.name+'</option>');
+                console.log("select "+name.idClient);
+            }
+            ); 
+        }
+    })
+}
+
+function autoInicioCar()
+{
+    console.log("se esta ejecutando tabla Car")
+
+    $.ajax
+    ({
+        url:"http://155.248.227.6:8080/api/Car/all",
+        type:"GET",
+        datatype:"JSON",
+        success:function(respuesta)
+        {
+            console.log(respuesta);
+            let $select = $("#Select-Car");
+            $.each
+            (respuesta, function (idCar, name) 
+            {
+                $select.append('<option value='+name.idCar+'>'+name.name+'</option>');
+                console.log("select "+name.idCar);
+            }
+            ); 
+        }
+    })
+}
+
+
+function traerReservaciones()
+{
+    console.log("test");
+
+    $.ajax
+    ({
+        url:"http://155.248.227.6:8080/api/Reservation/all",
+        type:"GET",
+        datatype:"JSON",
+        success:function(respuesta)
+        {
+            console.log(respuesta);
+            pintarRespuestaReservation(respuesta);
+        }
+    });
+}
+
+function pintarRespuestaReservation(respuesta)
+{
     let myTable="<table>";
     for(i=0;i<respuesta.length;i++){
         myTable+="<tr>";
         myTable+="<td>"+respuesta[i].startDate+"</td>";
-        myTable+="<td>"+respuesta[i].devolutionDate+"</td>";        
-        myTable+="<td>"+respuesta[i].status+"</td>";        
-        myTable+="<td>"+respuesta[i].client+"</td>";        
-        myTable+="<td>"+respuesta[i].car+"</td>";
-        myTable+="<td> <button onclick=' actualizarReservation("+respuesta[i].idReservation+")'>Actualizar</button>";
-        myTable+="<td> <button onclick='borrarReservation("+respuesta[i].idReservation+")'>Borrar</button>";
+        myTable+="<td>"+respuesta[i].devolutionDate+"</td>";
+        myTable+="<td>"+respuesta[i].status+"</td>";
+        myTable+="<td>"+respuesta[i].client.name+"</td>";
+        myTable+="<td>"+respuesta[i].car.name+"</td>";
+        myTable+="<td> <button onclick='actualizarReservation("+respuesta[i].idReservation+")'>Actualizar Reservación</button>";
+        myTable+="<td> <button onclick='borrarReservation("+respuesta[i].idReservation+")'>Borrar Reservación</button>";
         myTable+="</tr>";
     }
     myTable+="</table>";
     $("#resultadoReservation").html(myTable);
 }
 
-function guardarReservation()
-
-    {  
-        let var2 = 
-        {
-            startDate: $("#startDate").val(),
-            devolutionDate: $("#devolutionDate").val(),
-            status: $("#status").val(),
-            car:{idCar:+$("#Select-Car").val()},
-            client:{idClient:+$("#Select-Client").val()},
-        };
-
-        $.ajax
-        ({
-            type: "POST",
-            contentType: "application/json",
-            datatype: "JSON",
-            data: JSON.stringify(var2),
-
-            url:"http://155.248.227.6:8080/api/Reservation/save",
-
-            success: function (respuesta) {
-                console.log(respuesta);
-                console.log("Se guardo correctamente la reservación");
-                alert("Se ha guardado Correctamente la reservación!")
-                window.location.reload()
-            },
-            error: function (_jqXHR, _textStatus, _errorThrown) {
-                window.location.reload()
-                alert("No se guardo Correctamente la reservación!")
-            }
-        });
-    
-}
-
-function actualizarReservation(idElemento) 
+function guardarReservacion()
 {
-    let myData=
-    {
-        idReservation:idElemento,
-        
-        startDate: $("#startDate").val(),
-        devolutionDate: $("#devolutionDate").val(),
-        status: $("#status").val(),
-        car:{idCar:+$("#Select-Car").val()},
-        client:{idClient:+$("#Select-Client").val()},
-
+   
+    let var2 = 
+    {   
+        startDate:$("#StartDate").val(),
+        devolutionDate:$("#DevolutionDate").val(),
+        status:$("#Status").val(),
+        client:{idClient: +$("#Select-Client").val()},
+        car:{idCar: +$("#Select-Car").val()},
     };
-    console.log(myData);
-    let dataToSend=JSON.stringify(myData);
+      
+    let dataToSend = JSON.stringify(var2);
+    console.log(var2);
 
     $.ajax
     ({
-        url:"http://155.248.227.6:8080/api/Reservation/update",
-        type: 'PUT',
+        type:'POST',
+        contentType: "application/json; charset=utf-8",
+        
+        url:"http://155.248.227.6:8080/api/Reservation/save",
+        
+        dataType: 'JSON',
+        data: JSON.stringify(var2),
+
+        
+              
+        success:function(respuesta) 
+        {
+            console.log(respuesta);
+            console.log("Se guardo correctamente la reservación");
+            alert("Se guardo correctamente la reservación");
+            window.location.reload()
+        },
+        
+        error: function(_jqXHR, _textStatus, _errorThrown) 
+        {
+            window.location.reload()
+            alert("No se guardo correctamente la reservación");
+        }
+    });
+}
+
+function actualizarReservation(idElemento){
+    
+    if ($("#StartDate").val().length==0 || $("#DevolutionDate").val().length==0 || $("#Status").val().length==0)
+    {
+        alert("Todos los campos son obligatorios");
+    }
+    else
+    {
+        let myData=
+        {
+            idReservation:idElemento,
+            startDate:$("#StartDate").val(),
+            devolutionDate:$("#DevolutionDate").val(),
+            status:$("#Status").val(),
+            client:{idClient: +$("#Select-Client").val()},
+            car:{idCar: +$("#Select-Car").val()},
+        };
+        console.log(myData);
+        let dataToSend=JSON.stringify(myData);
+    
+        $.ajax
+        ({
+            url:"http://155.248.227.6:8080/api/Reservation/update",
+            type:"PUT",
+            data:dataToSend,
+            contentType:"application/JSON",
+            datatype:"JSON",
+            success:function(respuesta)
+            {
+                $("#StartDate").val("");
+                $("#DevolutionDate").val("");
+                $("#Status").val("");
+                $("#Select-Client").val("");
+                $("#Select-Car").val("");
+                autoInicioReservation();
+                alert("se ha Actualizado correctamente la reservación")
+            }
+        });
+    }
+}
+
+function borrarReservation(idElemento)
+{
+    let myData=
+    {
+        idReservation:idElemento
+    };
+    
+    let dataToSend=JSON.stringify(myData);
+    
+    $.ajax
+    ({
+        url:"http://155.248.227.6:8080/api/Reservation/"+idElemento,
+        type:"DELETE",
         data:dataToSend,
         contentType:"application/JSON",
         datatype:"JSON",
-
-        success: function (_respuesta) 
+        success:function(respuesta)
         {
-            $("#startDate").val("");
-            $("#devolutionDate").val("");
-            $("#status").val("");
-            $("#Select-Car").val(),
-            $("#Select-Client").val(),
+            $("#resultadoReservation").empty();
             autoInicioReservation();
-            alert("Se ha actualizado correctamente la reservación")
+            alert("Se ha Eliminado.")
         }
     });
-}
-
-function borrarReservation(idElemento) 
-{
-    let myData=
-    {
-        id:idElemento,
-    };
-    let dataToSend=JSON.stringify(myData);
-
-    $.ajax(
-        {
-            url:"http://155.248.227.6:8080/api/Reservation/"+idElemento,
-            type: 'DELETE',
-            data:dataToSend,
-            contentType: "application/JSON",
-            dataType:"JSON",
-            success: function (response) 
-            {
-                console.log(response);
-                $("#resultadoReservation").empty();
-                autoInicioReservation();
-                alert("se ha Eliminado Correctamente la Reservación!")
-            }
-        });
-}
-
-
-/*Manejador PUT
-function actualizarReservation(idElemento) {
-    
-    if($("#startDate").val().length == 0 || $("#devolutionDate").val().length == 0 || $("#status").val().length == 0){
-        alert("Todos los campos deben estar llenos")
-    }else{
-        let elemento = {
-            idReservation: idElemento,
-            startDate: $("#startDate").val(),
-            devolutionDate: $("#devolutionDate").val(),
-            status: $("#status").val(),
-            skate:{id: +$("#select-skate").val()},
-            client:{idClient: +$("#select-client").val()},
-        }
-
-        let dataToSend = JSON.stringify(elemento);
-
-        $.ajax({
-            datatype: 'JSON',
-            data: dataToSend,
-            contentType: "application/JSON",
-            url:"http://168.138.247.22:80/api/Reservation/update",
-            type: "PUT",
-
-            success: function (response) {
-                console.log(response);
-                $("#miListaReservation").empty();
-                alert("se ha Actualizado Correctamente!")
-
-                //Limpiar Campos
-                $("#resultado5").empty();
-
-                $("#startDate").val("");
-                $("#devolutionDate").val("");
-                $("#status").val("");
-
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                alert("No se Actualizo Correctamente!")
-            }
-        });
-    }
-}
-
-
-
-function guardarReservation()
-{
-    let var2 = 
-    {
-        startDate:$("#Reservationinicio").val(),
-        devolutionDate:$("#Reservationfinal").val(),
-        status:$("#Status").val(),
-        client:{idClient: +$("#Select-Client").val()},
-        car:{idCar: +$("#Select-Car").val()},
-    };
-      
-    $.ajax
-    ({
-        type:'POST',
-        contentType: "application/json; charset=utf-8",
-        dataType: 'JSON',
-        data: JSON.stringify(var2),
-        
-        url:"http://140.238.133.71:8080/api/Reservation/save",
-              
-        success:function(respuesta) 
-        {
-            console.log(respuesta);
-            console.log("Se guardo correctamente la Reservation");
-            alert("Se guardo correctamente la Reservation");
-            window.location.reload()
-        },
-        
-        error: function(_jqXHR, _textStatus, _errorThrown) 
-        {
-            window.location.reload()
-            alert("No se guardo correctamente la Reservation");
-        }
-    });
-}
-
-*/
-
-
-
-
-/** 
-function autoInicioReservation(){
-    console.log("se esta ejecutando tabla Reservation")
-    $.ajax({
-        url:"http://140.238.133.71:8080/api/Reservation/all",
-        type:"GET",
-        datatype:"JSON",
-        success:function(respuesta){
-            console.log(respuesta);
-            pintarRespuestaReservation(respuesta);
-            let $select = $("#Select-Reservation");
-            $.each(respuesta, function (_id, name) {
-                $select.append('<option value='+name.id+'>'+name.name+'</option>');
-                console.log("select "+name.id);
-            }); 
-        }
-    
-    })
 
 }
 
-function pintarRespuestaReservation(respuesta){
 
-    let myTable="<table>";
-    for(i=0;i<respuesta.length;i++){
-        myTable+="<tr>";
-        myTable+="<td>"+respuesta[i].startDate+"</td>";
-        myTable+="<td>"+respuesta[i].devolutionDate+"</td>";        
-        myTable+="<td>"+respuesta[i].status+"</td>";        
-        myTable+="<td>"+respuesta[i].client+"</td>";        
-        myTable+="<td>"+respuesta[i].car+"</td>";
-        myTable+="<td> <button onclick=' actualizarReservation("+respuesta[i].id+")'>Actualizar</button>";
-        myTable+="<td> <button onclick='borrarReservation("+respuesta[i].id+")'>Borrar</button>";
-        myTable+="</tr>";
-    }
-    myTable+="</table>";
-    $("#resultadoReservation").html(myTable);
-}
-
-function guardarReservation()
-{
-    let var2 = 
-    {
-        startDate:$("#Reservationinicio").val(),
-        devolutionDate:$("#Reservationfinal").val(),
-        status:$("#Status").val(),
-        client:{idClient: +$("#Select-Client").val()},
-        car:{idCar: +$("#Select-Car").val()},
-    };
-      
-    $.ajax
-    ({
-        type:'POST',
-        contentType: "application/json; charset=utf-8",
-        dataType: 'JSON',
-        data: JSON.stringify(var2),
-        
-        url:"http://140.238.133.71:8080/api/Reservation/save",
-              
-        success:function(respuesta) 
-        {
-            console.log(respuesta);
-            console.log("Se guardo correctamente la Reservation");
-            alert("Se guardo correctamente la Reservation");
-            window.location.reload()
-        },
-        
-        error: function(_jqXHR, _textStatus, _errorThrown) 
-        {
-            window.location.reload()
-            alert("No se guardo correctamente la Reservation");
-        }
-    });
-}
-
-*/
