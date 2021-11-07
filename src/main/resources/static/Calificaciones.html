@@ -29,6 +29,23 @@
      </ul>
     </div>
     </nav>
-   
+
+    <div id="resultadoScore"></div>
+
+    <!--<button onclick="traerCalificaciones()" > Consultar Calificaciones</button>-->
+    
+    <div>
+        <input type="number" id="Score" placeholder="calificación">
+        <input type="text" id="TextScore" placeholder="texto calificación">
+
+        <select id="Select-Reservation"></select>
+        <script type="text/javascript">
+        window.onload = autoInicioReservation();</script>
+    </div>
+    
+    <script type="text/javascript">window.onload = autoInicioScore();</script>
+
+    <button onclick="guardarCalificacion()">Guardar Calificación</button>
+    
 </body>
 </html>

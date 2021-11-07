@@ -1,10 +1,12 @@
-function traerReporteStatus(){
-    
-    $.ajax({
+function traerReporteStatus()
+{
+    $.ajax
+    ({
         url:"http://155.248.227.6:8080/api/Reservation/report-status",
         type:"GET",
         datatype:"JSON",
-        success:function(respuesta){
+        success:function(respuesta)
+        {
             console.log(respuesta);
             pintarRespuesta(respuesta);
         }
@@ -23,86 +25,74 @@ function pintarRespuesta(respuesta){
     myTable+="</table>";
     $("#resultadoStatus").html(myTable);
 }
-
-function traerReporteClientes(){
-    $.ajax({
-        url:"http://155.248.227.6:8080/api/Reservation/report-clients",
-        type:"GET",
-        datatype:"JSON",
-        success:function(respuesta){
-            console.log(respuesta);
-            pintarRespuestaClientes(respuesta);
-        }
-    });
-}
-
-function pintarRespuestaClientes(respuesta){
-
-    let myTable="<table>";
-    myTable+="<tr>";
-      
-    for(i=0;i<respuesta.length;i++){
-    myTable+="<th>total</th>";
-        myTable+="<td>"+respuesta[i].total+"</td>";
-        myTable+="<td>"+respuesta[i].client.name+"</td>";
-        myTable+="<td>"+respuesta[i].client.email+"</td>";
-        myTable+="<td>"+respuesta[i].client.age+"</td>";
-        myTable+="<td><a href= 'javascript:pintarRespuestaClientesReservaciones("+respuesta[i].client.reservations+");'>Ver reservaciones</a></td>";      
-        myTable+="</tr>";
-    }
-    myTable+="</table>";
-    $("#resultadoClientes").html(myTable);
-}
-
-function pintarRespuestaClientesReservaciones(respuesta){
-    console.log(respuesta);
-        let myTable="<table>";
-        myTable+="<tr>";
-          
-        for(i=0;i<respuesta.length;i++){
-        myTable+="<th>total</th>";
-            myTable+="<td>"+respuesta[i].startDate+"</td>";
-            
-           
-            myTable+="</tr>";
-        }
-        myTable+="</table>";
-        $("#resultadoClientes").html(myTable);
-    }
-
-
-function traerReporteDate(){
-
+function traerReporteDate()
+{
     var fechaInicio = document.getElementById("RstarDate").value;
     var fechaCierre = document.getElementById("RdevolutionDate").value;
     console.log(fechaInicio);
     console.log(fechaCierre);
     
-        $.ajax({
-            url:"http://155.248.227.6:8080/api/Reservation/report-dates/"+fechaInicio+"/"+fechaCierre,
-            type:"GET",
-            datatype:"JSON",
-            success:function(respuesta){
-                console.log(respuesta);
-                pintarRespuestaDate(respuesta);
-            }
-        });
-    }
-    function pintarRespuestaDate(respuesta){
-
-        let myTable="<table>";
-        myTable+="<tr>";
-          
-        for(i=0;i<respuesta.length;i++){
-        myTable+="<th>total</th>";
-            myTable+="<td>"+respuesta[i].devolutionDate+"</td>";
-            myTable+="<td>"+respuesta[i].startDate+"</td>";
-            myTable+="<td>"+respuesta[i].status+"</td>";
-          
-          
-            myTable+="</tr>";
+    $.ajax
+    ({
+        url:"http://155.248.227.6:8080/api/Reservation/report-dates/"+fechaInicio+"/"+fechaCierre,
+        type:"GET",
+        datatype:"JSON",
+        success:function(respuesta)
+        {
+            console.log(respuesta);
+            pintarRespuestaDate(respuesta);
         }
+    });
+}
+
+function pintarRespuestaDate(respuesta)
+{
+    let myTable="<table>";
+    myTable+="<tr>";
+          
+    for(i=0;i<respuesta.length;i++)
+    {
+        myTable+="<th>total</th>";
+        myTable+="<td>"+respuesta[i].devolutionDate+"</td>";
+        myTable+="<td>"+respuesta[i].startDate+"</td>";
+        myTable+="<td>"+respuesta[i].status+"</td>";
+        myTable+="</tr>";
+    }
         myTable+="</table>";
         $("#resultadoDate").html(myTable);
     }
 
+    function traerReporteClientes()
+    {
+        $.ajax
+        ({
+            url:"http://155.248.227.6:8080/api/Reservation/report-clients",
+            type:"GET",
+            datatype:"JSON",
+            success:function(respuesta)
+            {
+                console.log(respuesta);
+                pintarRespuestaClientes(respuesta);
+            }
+        });
+    }
+
+    function pintarRespuestaClientes(respuesta)
+    {
+        let myTable="<table>";
+        myTable+="<tr>";
+          
+        for(i=0;i<respuesta.length;i++)
+        {
+            myTable+="<th>total</th>";
+            myTable+="<td>"+respuesta[i].total+"</td>";
+            myTable+="<td>"+respuesta[i].client.name+"</td>";
+            myTable+="<td>"+respuesta[i].client.email+"</td>";
+            myTable+="<td>"+respuesta[i].client.age+"</td>";
+          
+            myTable+="</tr>";
+        }
+        
+        myTable+="</table>";
+        $("#resultadoClientes").html(myTable);
+    }

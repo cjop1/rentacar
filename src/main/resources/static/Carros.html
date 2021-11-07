@@ -7,12 +7,12 @@
     <title>Rent A Car</title> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="misestilos.css">
-    <script type="text/javascript" src="js/Score.js"></script>
+    <script type="text/javascript" src="js/Car.js"></script>  
 </head>
 <body>
     <header id="cabeceralogo">
     <div>
-    <h1>Calificaciones</h1>
+    <h1>Carros</h1>
     </div>
     </header>
     <nav id="menuprincipal">
@@ -29,6 +29,24 @@
      </ul>
     </div>
     </nav>
-   
+
+    <!--<button onclick="traerCarros()" > Consultar Carros</button>-->  
+    
+    <div>
+        <input type="text" id="CarName" placeholder="nombre carro">
+        <input type="text" id="CarBrand" placeholder="marca carro">
+        <input type="number" id="CarYear" placeholder="año carro">
+        <input type="text" id="CarDescription" placeholder="description carro">
+        <select id="Select-Gama"></select>
+        <script type="text/javascript">
+        window.onload = autoInicioGama();</script>
+    </div>
+    
+    <div id="resultadoCar"></div>
+
+    <script type="text/javascript">window.onload = autoInicioCar();</script>
+     
+    <button onclick="guardarCarro()">Guardar Carro</button>
+
 </body>
 </html>

@@ -1,5 +1,7 @@
-function autoInicioMessage(){
+function autoInicioMessage()
+{
     console.log("se esta ejecutando tabla Message")
+
     $.ajax
     ({
         url:"http://155.248.227.6:8080/api/Message/all",
@@ -10,49 +12,125 @@ function autoInicioMessage(){
             console.log(respuesta);
             pintarRespuestaMessage(respuesta);
             let $select = $("#Select-Message");
-            $.each(respuesta, function (_id, name) 
+            $.each
+            (respuesta, function (idMessage, name) 
             {
-                $select.append('<option value='+name.id+'>'+name.name+'</option>');
-                console.log("select "+name.id);
-            }); 
+                $select.append('<option value='+name.idMessage+'>'+name.name+'</option>');
+                console.log("select "+name.idMessage);
+            }
+            ); 
         }
     })
 }
 
 
+function autoInicioClient()
+{
+    console.log("se esta ejecutando tabla Cliente")
+
+    $.ajax
+    ({
+        url:"http://155.248.227.6:8080/api/Client/all",
+        type:"GET",
+        datatype:"JSON",
+        success:function(respuesta)
+        {
+            console.log(respuesta);
+            let $select = $("#Select-Client");
+            $.each
+            (respuesta, function (idClient, name) 
+            {
+                $select.append('<option value='+name.idClient+'>'+name.name+'</option>');
+                console.log("select "+name.idClient);
+            }
+            ); 
+        }
+    })
+}
+
+function autoInicioCar()
+{
+    console.log("se esta ejecutando tabla Car")
+
+    $.ajax
+    ({
+        url:"http://155.248.227.6:8080/api/Car/all",
+        type:"GET",
+        datatype:"JSON",
+        success:function(respuesta)
+        {
+            console.log(respuesta);
+            let $select = $("#Select-Car");
+            $.each
+            (respuesta, function (idCar, name) 
+            {
+                $select.append('<option value='+name.idCar+'>'+name.name+'</option>');
+                console.log("select "+name.idCar);
+            }
+            ); 
+        }
+    })
+}
+
+
+function traerMensajes()
+{
+    console.log("test");
+
+    $.ajax
+    ({
+        url:"http://155.248.227.6:8080/api/Message/all",
+        type:"GET",
+        datatype:"JSON",
+        success:function(respuesta)
+        {
+            console.log(respuesta);
+            pintarRespuestaMessage(respuesta);
+        }
+    });
+}
+
 function pintarRespuestaMessage(respuesta)
 {
     let myTable="<table>";
-    for(i=0;i<respuesta.length;i++)
-    {
+    for(i=0;i<respuesta.length;i++){
         myTable+="<tr>";
         myTable+="<td>"+respuesta[i].messageText+"</td>";
-        myTable+="<td> <button onclick=' actualizarMessage("+respuesta[i].idMessage+")'>Actualizar</button>";
-        myTable+="<td> <button onclick='borrarMessage("+respuesta[i].idMessage+")'>Borrar</button>";
+        myTable+="<td>"+respuesta[i].client.name+"</td>";
+        myTable+="<td>"+respuesta[i].car.name+"</td>";
+        myTable+="<td> <button onclick='actualizarMessage("+respuesta[i].idMessage+")'>Actualizar Mensaje</button>";
+        myTable+="<td> <button onclick='borrarMessage("+respuesta[i].idMessage+")'>Borrar Mensaje</button>";
         myTable+="</tr>";
     }
     myTable+="</table>";
     $("#resultadoMessage").html(myTable);
 }
 
-function guardarMessage()
+function guardarMensaje()
 {
+   
     let var2 = 
-        {
-            messageText:$("#messageText").val(),
-            idCliente:{idCliente: +$("#Select-Cliente").val()},
-            idCar:{idCar: +$("#Select-Car").val()},
-        };
-    
+    {   
+        messageText:$("#MessageText").val(),
+        client:{idClient: +$("#Select-Client").val()},
+        car:{idCar: +$("#Select-Car").val()},
+    };
+      
+    let dataToSend = JSON.stringify(var2);
+    console.log(var2);
+
     $.ajax
     ({
         type:'POST',
         contentType: "application/json; charset=utf-8",
-        dataType: 'JSON',
-        data: JSON.stringify(var2),
         
         url:"http://155.248.227.6:8080/api/Message/save",
-       
+        
+        dataType: 'JSON',
+        data: JSON.stringify(var2),
+
+        
+              
         success:function(respuesta) 
         {
             console.log(respuesta);
@@ -69,27 +147,42 @@ function guardarMessage()
     });
 }
 
-function actualizarMessage(idElemento)
-{
-    let myData=
+function actualizarMessage(idElemento){
+    
+    if ($("#MessageText").val().length==0)
     {
-        idMessage:idElemento,
-        messageText:$("#messagetext").val(),
-    };
-    console.log(myData);
-    let dataToSend=JSON.stringify(myData);
-    $.ajax({
-        url:"http://155.248.227.6:8080/api/Message/update",
-        type:"PUT",
-        data:dataToSend,
-        contentType:"application/JSON",
-        datatype:"JSON",
-        success:function(_respuesta){ 
-            $("#messageText").val("");
-            autoInicioMessage();
-            alert("se ha Actualizado correctamente el Mensaje")
-        }
-    });
+        alert("Todos los campos son obligatorios");
+    }
+    else
+    {
+        let myData=
+        {
+            idMessage:idElemento,
+            messageText:$("#MessageText").val(),
+            car:{idCar: +$("#Select-Car").val()},
+            client:{idClient: +$("#Select-Client").val()},
+
+        };
+        console.log(myData);
+        let dataToSend=JSON.stringify(myData);
+    
+        $.ajax
+        ({
+            url:"http://155.248.227.6:8080/api/Message/update",
+            type:"PUT",
+            data:dataToSend,
+            contentType:"application/JSON",
+            datatype:"JSON",
+            success:function(respuesta)
+            {
+                $("#MessageText").val("");
+                $("#Select-Car").val("");
+                $("#Select-Client").val("");
+                autoInicioMessage();
+                alert("se ha Actualizado correctamente el mensaje")
+            }
+        });
+    }
 }
 
 function borrarMessage(idElemento)
@@ -98,6 +191,7 @@ function borrarMessage(idElemento)
     {
         idMessage:idElemento
     };
+    
     let dataToSend=JSON.stringify(myData);
     
     $.ajax
@@ -107,11 +201,12 @@ function borrarMessage(idElemento)
         data:dataToSend,
         contentType:"application/JSON",
         datatype:"JSON",
-        success:function(_respuesta)
+        success:function(respuesta)
         {
             $("#resultadoMessage").empty();
             autoInicioMessage();
-            alert("Se ha Eliminado el mensaje")
+            alert("Se ha Eliminado.")
         }
     });
+
 }

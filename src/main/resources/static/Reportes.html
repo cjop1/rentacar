@@ -7,12 +7,12 @@
     <title>Rent A Car</title> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="misestilos.css">
-    <script type="text/javascript" src="js/Score.js"></script>
+    <script type="text/javascript" src="js/Reportes.js"></script>
 </head>
 <body>
     <header id="cabeceralogo">
     <div>
-    <h1>Calificaciones</h1>
+    <h1>Reportes</h1>
     </div>
     </header>
     <nav id="menuprincipal">
@@ -29,6 +29,20 @@
      </ul>
     </div>
     </nav>
-   
+
+    <!--<button onclick="traerReporteStatus()"> Generar Reporte Status Reservas </button>-->
+
+    <div id="resultadoStatus"></div>
+
+       
+    <input type="date" id="RstartDate" placeholder="descripcion">
+    <input type="date" id="RdevolutionDate" placeholder="descripcion">
+    <button onclick="traerReporteDate()"> Generar Reporte por fecha </button>
+    <div id="resultadoDate"></div>
+
+    <script type="text/javascript">window.onload = autoInicioReportes();</script>
+    <button onclick="traerReporteClientes()"> Generar Reporte Clientes y Cantidad de reservas por cliente </button>
+    <div id="resultadoClientes"></div>
+
 </body>
 </html>
