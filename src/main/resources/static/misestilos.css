@@ -1,8 +1,9 @@
 #cabeceralogo {
     width: 96%;
-    height: 150px;
+    height: 200px;
     padding: 0% 2%;
-    background-color: #390960;
+    background-color: #09000f;
+    background-image: url(bannerAzul.jpg);
     }
     #cabeceralogo > div {
     width: 960px;
@@ -11,15 +12,16 @@
     }
     #cabeceralogo h1 {
     font: bold 54px Arial, sans-serif;
+    text-align: center;
     color: #FFFFFF;
     }
 #menuprincipal {
 width: 96%;
-height: 50px;
+height: 100px;
 padding: 0% 2%;
-background-color: #1371dd;
-border-top: 1px solid #600960;
-border-bottom: 1px solid #5d0960;
+background-color: #4d647e;
+border-top: 1px solid #000000;
+border-bottom: 1px solid #030003;
 }
 #menuprincipal > div {
 width: 960px;
@@ -29,14 +31,14 @@ margin: 0px auto;
     display: inline-block;
     height: 35px;
     padding: 15px 10px 0px 10px;
-    margin-right: 5px;
+    margin-right: 0px;
     }
     #menuprincipal li:hover {
     background-color: #93baec;
     }
     #menuprincipal a {
     font: bold 18px Arial, sans-serif;
-    color: #333333;
+    color: #ffffff;
     text-decoration: none;
     }
     main {
@@ -99,16 +101,16 @@ margin: 0px auto;
             }
             article h1 {
                 margin-bottom: 5px;
-                font: bold 30px Georgia, sans-serif;
+                font: bold 30px Arial, sans-serif;
                 }
                 article p {
-                font: 18px Georgia, sans-serif;
+                font: 18px Arial, sans-serif;
                 }
                 figure {
                 margin: 10px 0px;
                 }
                 figure img {
-                padding: 5px;
+                padding: 555px;
                 border: 1px solid;
                 }
                 #pielogo {
